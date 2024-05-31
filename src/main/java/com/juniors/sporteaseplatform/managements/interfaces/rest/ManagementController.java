@@ -1,14 +1,14 @@
 package com.juniors.sporteaseplatform.managements.interfaces.rest;
 
-import com.juniors.sporteaseplatform.managements.domain.model.aggregates.Management;
-import com.juniors.sporteaseplatform.managements.domain.model.queries.GetAllManagementByTypeQuery;
-import com.juniors.sporteaseplatform.managements.domain.model.queries.GetAllManagementQuery;
-import com.juniors.sporteaseplatform.managements.domain.services.ManagementCommandService;
-import com.juniors.sporteaseplatform.managements.domain.services.ManagementQueryService;
-import com.juniors.sporteaseplatform.managements.interfaces.rest.resources.CreateManagementResource;
-import com.juniors.sporteaseplatform.managements.interfaces.rest.resources.ManagementResource;
-import com.juniors.sporteaseplatform.managements.interfaces.rest.transform.CreateManagementCommandFromResourceAssembler;
-import com.juniors.sporteaseplatform.managements.interfaces.rest.transform.ManagementResourceFromEntityAssembler;
+import com.juniors.sporteaseplatform.managements.domain.model.aggregates.Student;
+import com.juniors.sporteaseplatform.managements.domain.model.queries.GetAllStudentByCategoryQuery;
+import com.juniors.sporteaseplatform.managements.domain.model.queries.GetAllStudentQuery;
+import com.juniors.sporteaseplatform.managements.domain.services.StudentCommandService;
+import com.juniors.sporteaseplatform.managements.domain.services.StudentQueryService;
+import com.juniors.sporteaseplatform.managements.interfaces.rest.resources.CreateStudentResource;
+import com.juniors.sporteaseplatform.managements.interfaces.rest.resources.StudentResource;
+import com.juniors.sporteaseplatform.managements.interfaces.rest.transform.CreateStudentCommandFromResourceAssembler;
+import com.juniors.sporteaseplatform.managements.interfaces.rest.transform.StudentResourceFromEntityAssembler;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,43 +18,43 @@ import java.util.Optional;
 import static org.springframework.http.HttpStatus.CREATED;
 
 @RestController
-@RequestMapping("/managements")
+@RequestMapping("/students")
 // CAMBIARLO POR LO QUE TENEMOS EN EL base.service DE FRONTEND, LOS ENDPOINTS QUE USAMOS para no cambiar el del frontend cuando integremos
 public class ManagementController {
-    private final ManagementCommandService managementCommandService;
-    private final ManagementQueryService managementQueryService;
+    private final StudentCommandService studentCommandService;
+    private final StudentQueryService studentQueryService;
 
-    public ManagementController(ManagementCommandService managementCommandService, ManagementQueryService managementQueryService) {
-        this.managementCommandService = managementCommandService;
-        this.managementQueryService = managementQueryService;
+    public ManagementController(StudentCommandService studentCommandService, StudentQueryService studentQueryService) {
+        this.studentCommandService = studentCommandService;
+        this.studentQueryService = studentQueryService;
     }
 
     @PostMapping
-    public ResponseEntity<ManagementResource> createManagement(@RequestBody CreateManagementResource resource) {
-        Optional<Management> management = managementCommandService.
-                handle(CreateManagementCommandFromResourceAssembler.toCommandFromResource(resource));
-        return management.map(source -> new ResponseEntity<>(
-                        ManagementResourceFromEntityAssembler.toResourceFromEntity(source),CREATED)).
+    public ResponseEntity<StudentResource> createStudent(@RequestBody CreateStudentResource resource) {
+        Optional<Student> student = studentCommandService.
+                handle(CreateStudentCommandFromResourceAssembler.toCommandFromResource(resource));
+        return student.map(source -> new ResponseEntity<>(
+                        StudentResourceFromEntityAssembler.toResourceFromEntity(source),CREATED)).
                 orElseGet(()-> ResponseEntity.badRequest().build());
     }
 
-    @GetMapping("{type}")
-    public ResponseEntity<List<ManagementResource>> getManagementByType(@PathVariable String type) {
-        var getAllManagementByTypeQuery = new GetAllManagementByTypeQuery(type);
-        var management = managementQueryService.handle(getAllManagementByTypeQuery);
-        if (management.isEmpty()) return ResponseEntity.notFound().build();
-        var managementResources = management.stream().map(
-                ManagementResourceFromEntityAssembler:: toResourceFromEntity).toList();
-        return ResponseEntity.ok(managementResources);
+    @GetMapping("{category}")
+    public ResponseEntity<List<StudentResource>> getStudentByCategory(@PathVariable Integer category) {
+        var getAllStudentByCategoryQuery = new GetAllStudentByCategoryQuery(category);
+        var student = studentQueryService.handle(getAllStudentByCategoryQuery);
+        if (student.isEmpty()) return ResponseEntity.notFound().build();
+        var studentResources = student.stream().map(
+                StudentResourceFromEntityAssembler:: toResourceFromEntity).toList();
+        return ResponseEntity.ok(studentResources);
     }
 
     @GetMapping
-    public ResponseEntity<List<ManagementResource>> getAllManagement() {
-        var getAllManagementQuery = new GetAllManagementQuery();
-        var management = managementQueryService.handle(getAllManagementQuery);
-        if (management.isEmpty()) return ResponseEntity.notFound().build();
-        var managementResources = management.stream().map(
-                ManagementResourceFromEntityAssembler:: toResourceFromEntity).toList();
-        return ResponseEntity.ok(managementResources);
+    public ResponseEntity<List<StudentResource>> getAllStudent() {
+        var getAllStudentQuery = new GetAllStudentQuery();
+        var student = studentQueryService.handle(getAllStudentQuery);
+        if (student.isEmpty()) return ResponseEntity.notFound().build();
+        var studentResources = student.stream().map(
+                StudentResourceFromEntityAssembler:: toResourceFromEntity).toList();
+        return ResponseEntity.ok(studentResources);
     }
 }

@@ -1,8 +1,8 @@
 package com.juniors.sporteaseplatform.managements.interfaces.rest.resources;
 
-public record CreateManagementResource(String name, String lastName, String email, String password,
-                                       String type, String nameClub) {
-    public CreateManagementResource {
+public record CreateStudentResource(String name, String lastName, String email, String password,
+                                    String type, Integer category) {
+    public CreateStudentResource {
         if(name ==null){
             throw new IllegalArgumentException("name cannot be null");
         }
@@ -18,8 +18,8 @@ public record CreateManagementResource(String name, String lastName, String emai
         if(type==null){
             throw new IllegalArgumentException("type cannot be null");
         }
-        if(nameClub==null){
-            throw new IllegalArgumentException("nameClub cannot be null");
+        if(category==null){
+            throw new IllegalArgumentException("category cannot be null");
         }
     }
 }

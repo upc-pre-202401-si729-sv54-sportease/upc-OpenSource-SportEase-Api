@@ -1,28 +1,25 @@
 package com.juniors.sporteaseplatform.managements.domain.model.aggregates;
 
-import com.juniors.sporteaseplatform.managements.domain.model.commands.CreateManagementCommand;
+import com.juniors.sporteaseplatform.managements.domain.model.commands.CreateStudentCommand;
 import com.juniors.sporteaseplatform.shared.domain.model.aggregates.PersonAbstractAggregateRoot;
 import jakarta.persistence.*;
 import lombok.Getter;
 
 @Entity
-public class Management extends PersonAbstractAggregateRoot<Management> {
+public class Student extends PersonAbstractAggregateRoot<Student> {
 
     @Column(nullable = false)
     @Getter
-    private String nameClub;
+    private Integer category;
 
-    // NO ESTOY AGREGANDO "nameSport" porque creo que no lo usamos en ningun momento
-    // ya si lo consideran necesario lo agregan
+    protected Student(){}
 
-    protected Management(){}
-
-    public Management(CreateManagementCommand command){
+    public Student(CreateStudentCommand command){
         this.name = command.name();
         this.lastName = command.lastName();
         this.email = command.email();
         this.password = command.password();
         this.type = command.type();
-        this.nameClub = command.nameClub();
+        this.category = command.category();
     }
 }

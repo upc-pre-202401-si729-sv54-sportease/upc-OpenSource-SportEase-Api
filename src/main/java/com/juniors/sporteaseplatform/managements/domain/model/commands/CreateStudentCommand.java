@@ -1,8 +1,8 @@
 package com.juniors.sporteaseplatform.managements.domain.model.commands;
 
-public record CreateManagementCommand(String name, String lastName, String email, String password,
-                                      String type, String nameClub) {
-    public CreateManagementCommand {
+public record CreateStudentCommand(String name, String lastName, String email, String password,
+                                   String type, Integer category) {
+    public CreateStudentCommand {
         if(name ==null || name.isBlank()){
             throw new IllegalArgumentException("name is null or empty");
         }
@@ -18,8 +18,8 @@ public record CreateManagementCommand(String name, String lastName, String email
         if(type==null || type.isBlank()){
             throw new IllegalArgumentException("type is null or empty");
         }
-        if(nameClub==null || nameClub.isBlank()){
-            throw new IllegalArgumentException("nameClub is null or empty");
+        if(category==null){
+            throw new IllegalArgumentException("category is null");
         }
     }
 }
