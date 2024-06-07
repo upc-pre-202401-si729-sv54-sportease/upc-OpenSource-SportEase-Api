@@ -20,11 +20,11 @@ import static org.springframework.http.HttpStatus.CREATED;
 @RestController
 @RequestMapping("/students")
 // CAMBIARLO POR LO QUE TENEMOS EN EL base.service DE FRONTEND, LOS ENDPOINTS QUE USAMOS para no cambiar el del frontend cuando integremos
-public class ManagementController {
+public class StudentController {
     private final StudentCommandService studentCommandService;
     private final StudentQueryService studentQueryService;
 
-    public ManagementController(StudentCommandService studentCommandService, StudentQueryService studentQueryService) {
+    public StudentController(StudentCommandService studentCommandService, StudentQueryService studentQueryService) {
         this.studentCommandService = studentCommandService;
         this.studentQueryService = studentQueryService;
     }
